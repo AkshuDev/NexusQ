@@ -20,7 +20,6 @@
 ```bash
 pip install nexusq
 
-**OR**
+OR
 
-```bash
 pip install PheonixAppAPI
