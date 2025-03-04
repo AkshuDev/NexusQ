@@ -10,7 +10,7 @@ class QuantumSimulator:
     Simulates quantum circuits.
     """
 
-    def run(self, circuit: QuantumCircuit) -> np.ndarray:
+    def run(self, circuit: QuantumCircuit) -> tuple[np.ndarray, dict]:
         """
         Simulates the given quantum circuit.
 
@@ -18,11 +18,13 @@ class QuantumSimulator:
             circuit (QuantumCircuit): The quantum circuit to simulate.
 
         Returns:
-            np.ndarray: The final state vector of the qubits.
+            np.ndarray, dict: The final state vector of the qubits and the measurements.
         """
         num_qubits: int = circuit.get_num_qubits()
         state: np.ndarray = np.zeros(2**num_qubits, dtype=complex)
         state[0] = 1  # Initialize to |00...0>
+        
+        measurements = {}
 
         for gate in circuit.get_gates():
             gate_type: str = gate[0]
@@ -89,8 +91,9 @@ class QuantumSimulator:
             elif gate_type == "Rzz":
                 self._apply_rzz(state, qubit, qubit2, num_qubits, params)
             elif gate_type == "Measure":
-                self._apply_measure(state, qubit, num_qubits)
-        return state
+                measurement_outcome = self._apply_measure(state, qubit, num_qubits)
+                measurements[qubit] = measurement_outcome
+        return state, measurements
 
     def _apply_identity(self, state: np.ndarray, qubit: int, num_qubits: int) -> None:
         """Applies an Identity gate."""
@@ -222,9 +225,36 @@ class QuantumSimulator:
 
     def _apply_measure(self, state: np.ndarray, qubit: int, num_qubits: int) -> None:
         """Applies a measurement gate."""
-        # Basic measurement simulation, collapses state.
-        # Real measurement is probabilistic.
-        pass
+        # 1. Calculate probabilities
+        probability_0: float = 0.0
+        for i in range(2**num_qubits):
+            if (i >> (num_qubits - 1 - qubit)) & 1 == 0:  # Check if qubit is 0 in the binary representation of i
+                probability_0 += abs(state[i])**2
+        probability_1: float = 1.0 - probability_0
+
+        # 2. Generate random number
+        random_number: float = np.random.rand()
+
+        # 3. Determine measurement outcome
+        if random_number < probability_0:
+            outcome: int = 0
+        else:
+            outcome: int = 1
+
+        # 4. Collapse the state vector
+        self._collapse_state(state, qubit, outcome, num_qubits)
+
+        return outcome
+
+    def _collapse_state(self, state: np.ndarray, qubit: int, outcome: int, num_qubits: int) -> None:
+        """Collapses the state vector based on the measurement outcome."""
+        for i in range(2**num_qubits):
+            if ((i >> (num_qubits - 1 - qubit)) & 1) != outcome:
+                state[i] = 0  # Set amplitude to 0 if qubit is not the measured outcome
+        # Normalize the state vector
+        norm: float = np.linalg.norm(state)
+        if norm > 0:
+            state[:] = state / norm
 
     def _apply_gate(self, state: np.ndarray, gate_matrix: np.ndarray, qubit: int, num_qubits: int) -> None:
         """Applies a single-qubit gate to the state vector."""
