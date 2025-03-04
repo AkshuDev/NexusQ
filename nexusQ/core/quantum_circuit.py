@@ -15,6 +15,14 @@ class QuantumCircuit:
         """
         self.num_qubits = num_qubits
         self.gates = [] # Store the gates of the circuits
+
+    def i(self, qubit:int) -> None:
+        """Applies a Identitiy gate to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+        """
+        self.gates.append(("I", qubit))
         
     def h(self, qubit:int) -> None:
         """
@@ -51,6 +59,22 @@ class QuantumCircuit:
             qubit (int): The index of the qubit.
         """
         self.gates.append(("Z", qubit))
+
+    def S(self, qubit:int) -> None:
+        """Applies a Phase gate to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+        """
+        self.gates.append(("S", qubit))
+
+    def T(self, qubit:int) -> None:
+        """Applies a T (PI / 8) gate to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+        """
+        self.gates.append(("T", qubit))
         
     def cnot(self, control_qubit:int, target_qubit:int) -> None:
         """
@@ -61,6 +85,15 @@ class QuantumCircuit:
             target_qubit (int): The index of the target qubit.
         """
         self.gates.append(("CNOT", control_qubit, target_qubit))
+
+    def rx(self, qubit:int, theta:int) -> None:
+        """Applies the Rotation-X gate using the theta to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+            theta (int): The theta.
+        """
+        self.gates.append(("RX", qubit, theta))
         
     def measure(self, qubit:int) -> None:
         """
@@ -88,4 +121,3 @@ class QuantumCircuit:
             int: The number of qubits.
         """
         return self.num_qubits
-    
