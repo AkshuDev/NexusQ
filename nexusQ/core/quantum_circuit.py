@@ -94,6 +94,24 @@ class QuantumCircuit:
             theta (int): The theta.
         """
         self.gates.append(("RX", qubit, theta))
+
+    def ry(self, qubit:int, theta:int) -> None:
+        """Applies the Rotation-Y gate using the theta to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+            theta (int): The theta.
+        """
+        self.gates.append(("RY", qubit, theta))
+
+    def rz(self, qubit:int, theta:int) -> None:
+        """Applies the Rotation-Z gate using the theta to the specified qubit.
+
+        Args:
+            qubit (int): The index of the qubit.
+            theta (int): The theta.
+        """
+        self.gates.append(("RZ", qubit, theta))
         
     def measure(self, qubit:int) -> None:
         """
