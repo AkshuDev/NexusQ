@@ -112,6 +112,112 @@ class QuantumCircuit:
             theta (int): The theta.
         """
         self.gates.append(("RZ", qubit, theta))
+
+
+    def cz(self, control_qubit, target_qubit):
+        """
+        Applies a CZ gate to the specified control and target qubits.
+
+        Args:
+            control_qubit (int): The index of the control qubit.
+            target_qubit (int): The index of the target qubit.
+        """
+        self.gates.append(("CZ", control_qubit, target_qubit))
+
+    def swap(self, qubit1, qubit2):
+        """
+        Applies a SWAP gate to the specified qubits.
+
+        Args:
+            qubit1 (int): The index of the first qubit.
+            qubit2 (int): The index of the second qubit.
+        """
+        self.gates.append(("SWAP", qubit1, qubit2))
+
+    def ccx(self, control_qubit1, control_qubit2, target_qubit):
+        """
+        Applies a Toffoli (CCX) gate to the specified control and target qubits.
+
+        Args:
+            control_qubit1 (int): The index of the first control qubit.
+            control_qubit2 (int): The index of the second control qubit.
+            target_qubit (int): The index of the target qubit.
+        """
+        self.gates.append(("CCX", control_qubit1, control_qubit2, target_qubit))
+
+    def cy(self, control_qubit, target_qubit):
+        """
+        Applies a Controlled-Y gate.
+
+        Args:
+            control_qubit(int): the control qubit.
+            target_qubit(int): the target qubit.
+        """
+        self.gates.append(("CY", control_qubit, target_qubit))
+
+    def ch(self, control_qubit, target_qubit):
+        """
+        Applies a Controlled-Hadamard gate.
+
+        Args:
+            control_qubit(int): the control qubit.
+            target_qubit(int): the target qubit.
+        """
+        self.gates.append(("CH", control_qubit, target_qubit))
+
+    def cs(self, control_qubit, target_qubit):
+        """
+        Applies a Controlled-Phase gate.
+
+        Args:
+            control_qubit(int): the control qubit.
+            target_qubit(int): the target qubit.
+        """
+        self.gates.append(("CS", control_qubit, target_qubit))
+
+    def cswap(self, control_qubit, qubit1, qubit2):
+        """
+        Applies a Fredkin(CSWAP) gate.
+
+        Args:
+            control_qubit(int): the control qubit.
+            qubit1(int): the first target qubit.
+            qubit2(int): the second target qubit.
+        """
+        self.gates.append(("CSWAP", control_qubit, qubit1, qubit2))
+
+    def rxx(self, qubit1, qubit2, theta):
+        """
+        Applies a Rxx gate.
+
+        Args:
+            qubit1(int): the first qubit.
+            qubit2(int): the second qubit.
+            theta(float): the angle of rotation.
+        """
+        self.gates.append(("Rxx", qubit1, qubit2, theta))
+
+    def ryy(self, qubit1, qubit2, theta):
+        """
+        Applies a Ryy gate.
+
+        Args:
+            qubit1(int): the first qubit.
+            qubit2(int): the second qubit.
+            theta(float): the angle of rotation.
+        """
+        self.gates.append(("Ryy", qubit1, qubit2, theta))
+
+    def rzz(self, qubit1, qubit2, theta):
+        """
+        Applies a Rzz gate.
+
+        Args:
+            qubit1(int): the first qubit.
+            qubit2(int): the second qubit.
+            theta(float): the angle of rotation.
+        """
+        self.gates.append(("Rzz", qubit1, qubit2, theta))
         
     def measure(self, qubit:int) -> None:
         """
